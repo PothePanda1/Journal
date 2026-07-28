@@ -11,3 +11,9 @@ export async function getEntries() {
 	const entries = result.rows as unknown as Entry[];
 	return entries
 }
+
+export async function createEntry(content: string) {
+	// don't have to use batch here, because we already created the table
+	await db.execute({sql: "INSERT INTO entries(content) VALUES (?)", args:[content]});
+}
+
