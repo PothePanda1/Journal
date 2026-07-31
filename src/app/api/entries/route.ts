@@ -1,7 +1,7 @@
 // This file is used to make any request (GET, POST, DELETE, etc.)
 // This is the entries route (api/entries)
 import { NextRequest, NextResponse } from 'next/server';
-import { createEntries } from "../lib/db";
+import { createEntry } from "../../../lib/db";
 // implement createEntries in code
 
 export async function POST(request: NextRequest){
@@ -10,6 +10,7 @@ export async function POST(request: NextRequest){
     try{
     const body = await request.json();
     console.log(body.content);
+    await createEntry(body.content);
     return NextResponse.json({received: body.content}, {status: 201});
     }
 
