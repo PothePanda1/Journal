@@ -1,4 +1,5 @@
 import { getEntries } from "../lib/db";
+import NewEntryForm from "./NewEntryForm";
 
 export default async function Home() {
   const entries = await getEntries();
@@ -7,6 +8,7 @@ export default async function Home() {
   return (
   <div>
     <h1>Journal</h1>
+    <NewEntryForm/>
     <ul>{listItems}</ul>
   </div>
   );
