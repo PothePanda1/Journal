@@ -1,5 +1,6 @@
 import { getEntries } from "../lib/db";
 import NewEntryForm from "./NewEntryForm";
+export const dynamic = 'force-dynamic'
 
 export default async function Home() {
   const entries = await getEntries();
