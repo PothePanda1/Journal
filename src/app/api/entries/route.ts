@@ -2,20 +2,27 @@
 // This is the entries route (api/entries)
 import { NextRequest, NextResponse } from 'next/server';
 import { createEntry } from "../../../lib/db";
-// implement createEntries in code
 
-export async function POST(request: NextRequest){
-    
-    // Parse the incoming JSON body
-    try{
-    const body = await request.json();
-    console.log(body.content);
-    await createEntry(body.content);
-    return NextResponse.json({received: body.content}, {status: 201});
+
+export async function POST(request: NextRequest) {
+
+    let body;
+    try {
+        body = await request.json();
+    } catch (error) {
+        return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
     }
 
-    catch(error){
-        // Handles cases where JSON is empty or malformed
-    return NextResponse.json({error:"Invalid JSON"}, { status: 400});
+    if (!body.content || body.content.trim() === "") {
+        return NextResponse.json({ error: "Content required" }, { status: 400 });
+    }
+    try {
+        // Creates entry with parsed body
+        await createEntry(body.content);
+        return NextResponse.json({ received: body.content }, { status: 201 });
+    }
+    catch (error) {
+        // Handles cases where table isn't found, file is unreachable, connection is dropped, etc.
+        return NextResponse.json({ error: "Server Failure" }, { status: 500 });
     }
 }
