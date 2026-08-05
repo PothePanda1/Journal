@@ -19,9 +19,7 @@ export default function NewEntryForm(){
     return ( 
         <>
         <textarea value={text} onChange={handleChange}/>
-        <button onClick={submitEntry}>
-        Submit
-        </button>
+        <button onClick={submitEntry}>Submit</button>
         </>
     );
 }

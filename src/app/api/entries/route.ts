@@ -1,4 +1,4 @@
-// This file is used to make any request (GET, POST, DELETE, etc.)
+// This file is used to make request to the collectionw (GET, POST )
 // This is the entries route (api/entries)
 import { NextRequest, NextResponse } from 'next/server';
 import { createEntry } from "../../../lib/db";

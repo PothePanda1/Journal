@@ -9,7 +9,7 @@ const authToken = process.env.TURSO_AUTH_TOKEN;
 
 export const db = createClient({ url, authToken });
 
-interface Entry{id: number; content: string; created_at: string}
+export interface Entry{id: number; content: string; created_at: string}
 
 export async function getEntries() {
 	const result = await db.execute("SELECT * FROM entries");
@@ -22,3 +22,6 @@ export async function createEntry(content: string) {
 	await db.execute({sql: "INSERT INTO entries(content) VALUES (?)", args:[content]});
 }
 
+export async function deleteEntry(id: number) {
+	await db.execute({sql: "DELETE FROM entries WHERE id = ?", args:[id]});
+}
