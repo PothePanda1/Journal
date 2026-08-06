@@ -4,8 +4,8 @@ if (process.env.NODE_ENV === "production" && !process.env.TURSO_DATABASE_URL) {
 	throw new Error("TURSO_DATABASE_URL must be set in production");
 }
 
-const url = process.env.TURSO_DATABASE_URL || "file:local.db";
-const authToken = process.env.TURSO_AUTH_TOKEN;
+export const url = process.env.TURSO_DATABASE_URL || "file:local.db";
+export const authToken = process.env.TURSO_AUTH_TOKEN;
 
 export const db = createClient({ url, authToken });
 
