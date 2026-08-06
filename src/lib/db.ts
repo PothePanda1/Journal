@@ -25,3 +25,7 @@ export async function createEntry(content: string) {
 export async function deleteEntry(id: number) {
 	await db.execute({sql: "DELETE FROM entries WHERE id = ?", args:[id]});
 }
+
+export async function updateEntry(content: string, id: number){
+	await db.execute({sql:"UPDATE entries SET content = ? WHERE id = ?", args:[content,id]});
+}
