@@ -1,3 +1,5 @@
+// SQL functions live here
+
 import { createClient } from "@libsql/client";
 
 if (process.env.NODE_ENV === "production" && !process.env.TURSO_DATABASE_URL) {

@@ -1,3 +1,5 @@
+// Route handler for DELETE and PATCH (Edit)
+
 import { deleteEntry, updateEntry } from '@/lib/db';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -19,6 +21,7 @@ export async function DELETE(
     }
 }
 
+// editing function 
 export async function PATCH(
     request: NextRequest,
     {params} : {params : Promise<{id: string}>}

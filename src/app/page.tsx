@@ -1,3 +1,5 @@
+// This is the main page of the website
+
 import { getEntries } from "../lib/db";
 import NewEntryForm from "./NewEntryForm";
 import EntryItem from "./EntryItem";
@@ -11,7 +13,7 @@ export const dynamic = 'force-dynamic'
 export default async function Home() {
   const entries = await getEntries();
   console.log(entries);
-
+  console.log(entries[0].created_at)
   // One EntryItem per row. 'key' is indexing for list items.
   // 'entry' is the prop, what is taken by EntryItem. 
   // Result is an array of EntryItem elements.

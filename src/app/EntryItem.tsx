@@ -1,3 +1,5 @@
+// Client Component - enables user interactivity (buttons and text)
+
 "use client"
 import { Entry } from "@/lib/db";
 import { useRouter } from "next/navigation";

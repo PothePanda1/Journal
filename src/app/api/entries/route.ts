@@ -1,5 +1,5 @@
-// This file is used to make request to the collectionw (GET, POST )
-// This is the entries route (api/entries)
+// Route handler for POST 
+
 import { NextRequest, NextResponse } from 'next/server';
 import { createEntry } from "../../../lib/db";
 
