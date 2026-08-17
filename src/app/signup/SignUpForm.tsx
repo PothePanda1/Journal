@@ -1,5 +1,5 @@
 "use client"
-import { useState } from 'react';
+import { use, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { authClient } from '@/lib/auth-client';
 
@@ -7,6 +7,7 @@ export default function SignUpForm(){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
+    const [errorMsg, setErrorMsg] = useState('')
 
     const router = useRouter();
 
@@ -27,19 +28,23 @@ export default function SignUpForm(){
         });
         if (error) {
             // tell the user something went wrong
-            console.log("Error") // This would be a pop-up message that comes up and tells the user incorrect username or password or email or whatever
+            console.log("Error") 
+            // here would be a pop-up message that comes up and tells the user incorrect username or password or email or whatever
+            setErrorMsg(error.message ?? 'Something went wrong. Please try again.')
         }
         else{
             // log in user - forward him to actual journal page
             router.push("/");
         }
     }
+
     return ( 
         <>
-        <input value={name} onChange={handleName}/>
-        <input value={email} onChange={handleEmail}/>
-        <input value={password} type="password" onChange={handlePassword}/>
+        <input value={name} onChange={handleName} placeholder='Name'/>
+        <input value={email} onChange={handleEmail} placeholder='Email'/>
+        <input value={password} type="password" onChange={handlePassword} placeholder='Password'/>
         <button onClick={handleSignUp}>Submit</button>
+        {errorMsg && <p>{errorMsg}</p>}
         </>
     );
 }
