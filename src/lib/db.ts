@@ -15,8 +15,11 @@ export interface Entry{id: number; content: string; created_at: string}
 
 export async function getEntries() {
 	const result = await db.execute("SELECT * FROM entries");
-	const entries = result.rows as unknown as Entry[];
-	return entries
+	return result.rows.map(row => ({
+	id: Number(row.id),
+	content: String(row.content),
+	created_at: String(row.created_at)
+	}))
 }
 
 export async function createEntry(content: string) {

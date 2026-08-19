@@ -6,6 +6,7 @@ import EntryItem from "./EntryItem";
 import {headers} from "next/headers"; // needed to apply headers
 import { redirect } from "next/navigation"; // needed to redirect users to signup page if not logged in
 import { auth } from "@/lib/auth";
+import SignOut from "./SignOut";
 
 // Opts this route out of static rendering
 // allows for updates to appear
@@ -27,6 +28,7 @@ export default async function Home() {
   // Why EntryItem?
   // EntryItem was implemented because we couldn't get a delete button here otherwise
   // The button lives in a client component, the page is a server component.
+  // Basically interactive things are client, but if those things talk to the database they're server.
   // By default we want things to live on the server, unless we can't 
   const listItems = entries.map(ent => <EntryItem key={ent.id} entry={ent}/>);
   return (
@@ -34,6 +36,7 @@ export default async function Home() {
     <h1>Journal</h1>
     <NewEntryForm/>
     <ul>{listItems}</ul>
+    <SignOut/>
   </div>
   );
 }
