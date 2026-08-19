@@ -1,0 +1,248 @@
+[33mcommit 6f55a7418fc93c060ced15667727713ed5e5e84b[m
+Author: Bijay <bg00629@surrey.ac.uk>
+Date:   Mon Aug 17 23:42:55 2026 +0100
+
+    sign up page/form
+
+[1mdiff --git a/src/app/EntryItem.tsx b/src/app/EntryItem.tsx[m
+[1mindex 774b8c8..1dd79e1 100644[m
+[1m--- a/src/app/EntryItem.tsx[m
+[1m+++ b/src/app/EntryItem.tsx[m
+[36m@@ -1,3 +1,5 @@[m
+[32m+[m[32m// Client Component - enables user interactivity (buttons and text)[m[41m[m
+[32m+[m[41m[m
+ "use client"[m
+ import { Entry } from "@/lib/db";[m
+ import { useRouter } from "next/navigation";[m
+[1mdiff --git a/src/app/NewEntryForm.tsx b/src/app/NewEntryForm.tsx[m
+[1mindex b88a0c7..0c2cfd1 100644[m
+[1m--- a/src/app/NewEntryForm.tsx[m
+[1m+++ b/src/app/NewEntryForm.tsx[m
+[36m@@ -1,3 +1,5 @@[m
+[32m+[m[32m// Client Component - enables user interactivity (buttons and text)[m[41m[m
+[32m+[m[41m[m
+ "use client"[m
+ import { useState } from 'react';[m
+ import { useRouter } from 'next/navigation';[m
+[1mdiff --git a/src/app/api/entries/[id]/route.ts b/src/app/api/entries/[id]/route.ts[m
+[1mindex d645375..2252273 100644[m
+[1m--- a/src/app/api/entries/[id]/route.ts[m
+[1m+++ b/src/app/api/entries/[id]/route.ts[m
+[36m@@ -1,3 +1,5 @@[m
+[32m+[m[32m// Route handler for DELETE and PATCH (Edit)[m[41m[m
+[32m+[m[41m[m
+ import { deleteEntry, updateEntry } from '@/lib/db';[m
+ import { NextRequest, NextResponse } from 'next/server';[m
+ [m
+[36m@@ -19,6 +21,7 @@[m [mexport async function DELETE([m
+     }[m
+ }[m
+ [m
+[32m+[m[32m// editing function[m[41m [m
+ export async function PATCH([m
+     request: NextRequest,[m
+     {params} : {params : Promise<{id: string}>}[m
+[1mdiff --git a/src/app/api/entries/route.ts b/src/app/api/entries/route.ts[m
+[1mindex b3bf386..cc80387 100644[m
+[1m--- a/src/app/api/entries/route.ts[m
+[1m+++ b/src/app/api/entries/route.ts[m
+[36m@@ -1,5 +1,5 @@[m
+[31m-// This file is used to make request to the collectionw (GET, POST )[m
+[31m-// This is the entries route (api/entries)[m
+[32m+[m[32m// Route handler for POST[m[41m [m
+[32m+[m[41m[m
+ import { NextRequest, NextResponse } from 'next/server';[m
+ import { createEntry } from "../../../lib/db";[m
+ [m
+[1mdiff --git a/src/app/page.tsx b/src/app/page.tsx[m
+[1mindex 298b388..99d338f 100644[m
+[1m--- a/src/app/page.tsx[m
+[1m+++ b/src/app/page.tsx[m
+[36m@@ -1,3 +1,5 @@[m
+[32m+[m[32m// This is the main page of the website[m
+[32m+[m
+ import { getEntries } from "../lib/db";[m
+ import NewEntryForm from "./NewEntryForm";[m
+ import EntryItem from "./EntryItem";[m
+[36m@@ -11,7 +13,7 @@[m [mexport const dynamic = 'force-dynamic'[m
+ export default async function Home() {[m
+   const entries = await getEntries();[m
+   console.log(entries);[m
+[31m-[m
+[32m+[m[32m  console.log(entries[0].created_at)[m
+   // One EntryItem per row. 'key' is indexing for list items.[m
+   // 'entry' is the prop, what is taken by EntryItem. [m
+   // Result is an array of EntryItem elements.[m
+[1mdiff --git a/src/app/signup/SignUpForm.tsx b/src/app/signup/SignUpForm.tsx[m
+[1mnew file mode 100644[m
+[1mindex 0000000..6872e02[m
+[1m--- /dev/null[m
+[1m+++ b/src/app/signup/SignUpForm.tsx[m
+[36m@@ -0,0 +1,45 @@[m
+[32m+[m[32m"use client"[m[41m[m
+[32m+[m[32mimport { useState } from 'react';[m[41m[m
+[32m+[m[32mimport { useRouter } from 'next/navigation';[m[41m[m
+[32m+[m[32mimport { authClient } from '@/lib/auth-client';[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32mexport default function SignUpForm(){[m[41m[m
+[32m+[m[32m    const [email, setEmail] = useState('');[m[41m[m
+[32m+[m[32m    const [password, setPassword] = useState('');[m[41m[m
+[32m+[m[32m    const [name, setName] = useState('');[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m    const router = useRouter();[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m    function handleEmail(e: React.ChangeEvent<HTMLInputElement>) {[m[41m[m
+[32m+[m[32m        setEmail(e.target.value);[m[41m[m
+[32m+[m[32m    }[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m    function handlePassword(e: React.ChangeEvent<HTMLInputElement>) {[m[41m[m
+[32m+[m[32m        setPassword(e.target.value);[m[41m[m
+[32m+[m[32m    }[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m    function handleName(e: React.ChangeEvent<HTMLInputElement>) {[m[41m[m
+[32m+[m[32m        setName(e.target.value);[m[41m[m
+[32m+[m[32m    }[m[41m[m
+[32m+[m[32m    async function handleSignUp() {[m[41m[m
+[32m+[m[32m        const { data, error } = await authClient.signUp.email({[m[41m[m
+[32m+[m[32m            name, email, password[m[41m[m
+[32m+[m[32m        });[m[41m[m
+[32m+[m[32m        if (error) {[m[41m[m
+[32m+[m[32m            // tell the user something went wrong[m[41m[m
+[32m+[m[32m            console.log("Error") // This would be a pop-up message that comes up and tells the user incorrect username or password or email or whatever[m[41m[m
+[32m+[m[32m        }[m[41m[m
+[32m+[m[32m        else{[m[41m[m
+[32m+[m[32m            // log in user - forward him to actual journal page[m[41m[m
+[32m+[m[32m            router.push("/");[m[41m[m
+[32m+[m[32m        }[m[41m[m
+[32m+[m[32m    }[m[41m[m
+[32m+[m[32m    return ([m[41m [m
+[32m+[m[32m        <>[m[41m[m
+[32m+[m[32m        <input value={name} onChange={handleName}/>[m[41m[m
+[32m+[m[32m        <input value={email} onChange={handleEmail}/>[m[41m[m
+[32m+[m[32m        <input value={password} type="password" onChange={handlePassword}/>[m[41m[m
+[32m+[m[32m        <button onClick={handleSignUp}>Submit</button>[m[41m[m
+[32m+[m[32m        </>[m[41m[m
+[32m+[m[32m    );[m[41m[m
+[32m+[m[32m}[m[41m[m
+[1mdiff --git a/src/app/signup/page.tsx b/src/app/signup/page.tsx[m
+[1mindex 2e52382..8fc0e80 100644[m
+[1m--- a/src/app/signup/page.tsx[m
+[1m+++ b/src/app/signup/page.tsx[m
+[36m@@ -1,44 +1,17 @@[m
+[31m-"use client"[m
+[31m-import { useState } from 'react';[m
+[31m-import { useRouter } from 'next/navigation';[m
+[31m-import { authClient } from '@/lib/auth-client';[m
+ [m
+[31m-// New page for sign up [m
+[31m-// needs email password name for signup[m
+[31m-// in a new folder called signup as its a new page[m
+[32m+[m[32m// New page used for users to sign up[m[41m [m
+[32m+[m[32m// Similar logic to before a page.tsx file that uses a form to handle api calls and objects[m[41m[m
+[32m+[m[32mimport SignUpForm from "./signUpForm";[m[41m[m
+ [m
+[31m-export default function Home(){[m
+[31m-    const[email,setEmail] = useState('');[m
+[31m-    const[password,setPassword] = useState('');[m
+[31m-    const[name,setName] = useState('');[m
+[31m-    const router = useRouter();[m
+[32m+[m[41m[m
+[32m+[m[32mexport default function SignUpPage(){[m[41m[m
+     [m
+[31m-    function handleEmail(e: React.ChangeEvent<HTMLInputElement>){[m
+[31m-        setEmail(e.target.value);[m
+[31m-    }[m
+[31m-    function handlePassword(e: React.ChangeEvent<HTMLInputElement>){[m
+[31m-        setPassword(e.target.value);[m
+[31m-    }[m
+[31m-    function handleName(e: React.ChangeEvent<HTMLInputElement>){[m
+[31m-        setName(e.target.value);[m
+[31m-    }[m
+[31m-    async function handleSignUp() {[m
+[31m-        const { data, error } = await authClient.signUp.email({[m
+[31m-            name, email, password[m
+[31m-        });[m
+[31m-        if (error) {[m
+[31m-            // tell the user something went wrong[m
+[31m-        } else {[m
+[31m-            // signed up — go somewhere[m
+[31m-        }[m
+[31m-    }[m
+[31m-    return ( [m
+[31m-        <>[m
+[31m-        <input value={name} onChange={handleName}/>[m
+[31m-        <input value={email} onChange={handleEmail}/>[m
+[31m-        <input value={password} type="password" onChange={handlePassword}/>[m
+[31m-        <button onClick={submitEntry}>Submit</button>[m
+[31m-        </>[m
+[31m-    );[m
+[32m+[m[32m    return ([m[41m[m
+[32m+[m[32m        <div>[m[41m[m
+[32m+[m[32m            <h1>Sign Up Form</h1>[m[41m[m
+[32m+[m[32m            <SignUpForm/>[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m        </div>[m[41m[m
+[32m+[m[32m    )[m[41m[m
+ }[m
+ [m
+[1mdiff --git a/src/app/signup/signUpForm.tsx b/src/app/signup/signUpForm.tsx[m
+[1mnew file mode 100644[m
+[1mindex 0000000..c7723db[m
+[1m--- /dev/null[m
+[1m+++ b/src/app/signup/signUpForm.tsx[m
+[36m@@ -0,0 +1,45 @@[m
+[32m+[m[32m"use client"[m[41m[m
+[32m+[m[32mimport { useState } from 'react';[m[41m[m
+[32m+[m[32mimport { useRouter } from 'next/navigation';[m[41m[m
+[32m+[m[32mimport { authClient } from '@/lib/auth-client';[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32mexport default function SignUpForm(){[m[41m[m
+[32m+[m[32m    const [email, setEmail] = useState('Email');[m[41m[m
+[32m+[m[32m    const [password, setPassword] = useState('Password');[m[41m[m
+[32m+[m[32m    const [name, setName] = useState('Name');[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m    const router = useRouter();[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m    function handleEmail(e: React.ChangeEvent<HTMLInputElement>) {[m[41m[m
+[32m+[m[32m        setEmail(e.target.value);[m[41m[m
+[32m+[m[32m    }[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m    function handlePassword(e: React.ChangeEvent<HTMLInputElement>) {[m[41m[m
+[32m+[m[32m        setPassword(e.target.value);[m[41m[m
+[32m+[m[32m    }[m[41m[m
+[32m+[m[41m[m
+[32m+[m[32m    function handleName(e: React.ChangeEvent<HTMLInputElement>) {[m[41m[m
+[32m+[m[32m        setName(e.target.value);[m[41m[m
+[32m+[m[32m    }[m[41m[m
+[32m+[m[32m    async function handleSignUp() {[m[41m[m
+[32m+[m[32m        const { data, error } = await authClient.signUp.email({[m[41m[m
+[32m+[m[32m            name, email, password[m[41m[m
+[32m+[m[32m        });[m[41m[m
+[32m+[m[32m        if (error) {[m[41m[m
+[32m+[m[32m            // tell the user something went wrong[m[41m[m
+[32m+[m[32m            console.log("Error") // This would be a pop-up message that comes up and tells the user incorrect username or password or email or whatever[m[41m[m
+[32m+[m[32m        }[m[41m[m
+[32m+[m[32m        else{[m[41m[m
+[32m+[m[32m            // log in user - forward him to actual journal page[m[41m[m
+[32m+[m[32m            router.push("/");[m[41m[m
+[32m+[m[32m        }[m[41m[m
+[32m+[m[32m    }[m[41m[m
+[32m+[m[32m    return ([m[41m [m
+[32m+[m[32m        <>[m[41m[m
+[32m+[m[32m        <input value={name} onChange={handleName}/>[m[41m[m
+[32m+[m[32m        <input value={email} onChange={handleEmail}/>[m[41m[m
+[32m+[m[32m        <input value={password} type="password" onChange={handlePassword}/>[m[41m[m
+[32m+[m[32m        <button onClick={handleSignUp}>Submit</button>[m[41m[m
+[32m+[m[32m        </>[m[41m[m
+[32m+[m[32m    );[m[41m[m
+[32m+[m[32m}[m[41m[m
+[1mdiff --git a/src/lib/db.ts b/src/lib/db.ts[m
+[1mindex f5627ff..16555da 100644[m
+[1m--- a/src/lib/db.ts[m
+[1m+++ b/src/lib/db.ts[m
+[36m@@ -1,3 +1,5 @@[m
+[32m+[m[32m// SQL functions live here[m
+[32m+[m
+ import { createClient } from "@libsql/client";[m
+ [m
+ if (process.env.NODE_ENV === "production" && !process.env.TURSO_DATABASE_URL) {[m

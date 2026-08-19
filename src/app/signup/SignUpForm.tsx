@@ -29,7 +29,7 @@ export default function SignUpForm(){
         if (error) {
             // tell the user something went wrong
             console.log("Error") 
-            // here would be a pop-up message that comes up and tells the user incorrect username or password or email or whatever
+            // error message, ?? means if the error message is invalid (like null/undefined) for some reason theres a default message 
             setErrorMsg(error.message ?? 'Something went wrong. Please try again.')
         }
         else{
@@ -38,6 +38,8 @@ export default function SignUpForm(){
         }
     }
 
+    //input is used for small one line entries.
+    // intitally errormessage is '', so nothing appears unless an error appears.
     return ( 
         <>
         <input value={name} onChange={handleName} placeholder='Name'/>

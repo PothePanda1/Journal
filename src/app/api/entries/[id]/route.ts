@@ -2,6 +2,7 @@
 
 import { deleteEntry, updateEntry } from '@/lib/db';
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@/lib/auth';
 
 // making the delete function, after this I will need to make the GUI/a button to delete ids
 export async function DELETE(
@@ -10,6 +11,10 @@ export async function DELETE(
     ) {
     const {id} = await params;
     const entryId = Number(id);
+    const session = await auth.api.getSession({headers: request.headers})
+    if (!session){
+        return NextResponse.json({ error: "Not Logged In" }, { status: 401 })
+    }
     if (isNaN(entryId)){
         return NextResponse.json({ error: "Invalid Entry ID" }, { status: 400 })
     } 
@@ -26,6 +31,11 @@ export async function PATCH(
     request: NextRequest,
     {params} : {params : Promise<{id: string}>}
 ){
+    const session = await auth.api.getSession({ headers: request.headers });
+    if (!session) {
+        return NextResponse.json({ error: "Not Logged In" }, { status: 401 });
+    }
+
     const{id} = await params;
     const entryId = Number(id);
     // checking if id is a number/valid input
