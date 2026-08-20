@@ -13,24 +13,25 @@ export const db = createClient({ url, authToken });
 
 export interface Entry{id: number; content: string; created_at: string}
 
-export async function getEntries() {
-	const result = await db.execute("SELECT * FROM entries");
+export async function getEntries(userId: string) {
+	const result = await db.execute({sql:"SELECT * FROM entries WHERE userId = ?", args:[userId]});
 	return result.rows.map(row => ({
 	id: Number(row.id),
 	content: String(row.content),
-	created_at: String(row.created_at)
+	created_at: String(row.created_at),
+	userId: String(row.userId) // auth uses this way camelcase
 	}))
 }
 
-export async function createEntry(content: string) {
+export async function createEntry(content: string, userId: string) {
 	// don't have to use batch here, because we already created the table
-	await db.execute({sql: "INSERT INTO entries(content) VALUES (?)", args:[content]});
+	await db.execute({sql: "INSERT INTO entries(content, userId) VALUES (?, ?)", args:[content, userId]});
 }
 
-export async function deleteEntry(id: number) {
-	await db.execute({sql: "DELETE FROM entries WHERE id = ?", args:[id]});
+export async function deleteEntry(id: number, userId: string) {
+	return await db.execute({sql: "DELETE FROM entries WHERE id = ? AND userId = ?", args:[id,userId]});
 }
 
-export async function updateEntry(content: string, id: number){
-	await db.execute({sql:"UPDATE entries SET content = ? WHERE id = ?", args:[content,id]});
+export async function updateEntry(content: string, id: number, userId: string){
+	return await db.execute({sql:"UPDATE entries SET content = ? WHERE id = ? AND userId = ?", args:[content,id, userId]});
 }

@@ -19,7 +19,10 @@ export async function DELETE(
         return NextResponse.json({ error: "Invalid Entry ID" }, { status: 400 })
     } 
     try{
-    await deleteEntry(entryId);
+    const result = await deleteEntry(entryId, session.user.id);
+    if (result.rowsAffected === 0) {
+        return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
     return NextResponse.json({ deleted: entryId }, { status: 200 })}
     catch(error){
          return NextResponse.json({ error: "Server Failure" }, { status: 500 });
@@ -57,7 +60,10 @@ export async function PATCH(
     }
     try {
         // Updates entry with id and parsed body
-        await updateEntry(body.content,entryId);
+        const result = await updateEntry(body.content,entryId,session.user.id);
+        if (result.rowsAffected === 0){
+            return NextResponse.json({ error: "Not found" }, { status: 404 });
+        }
         return NextResponse.json({ received: body.content }, { status: 200 });
     }
     catch (error) {

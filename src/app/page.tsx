@@ -19,7 +19,7 @@ export default async function Home() {
   if (!session){
     redirect("/signup")
   }
-  const entries = await getEntries();
+  const entries = await getEntries(session.user.id);
 
   // One EntryItem per row. 'key' is indexing for list items.
   // 'entry' is the prop, what is taken by EntryItem. 

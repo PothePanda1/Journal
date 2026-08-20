@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     }
     try {
         // Creates entry with parsed body
-        await createEntry(body.content);
+        await createEntry(body.content, session.user.id);
         return NextResponse.json({ received: body.content }, { status: 201 });
     }
     catch (error) {
